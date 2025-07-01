@@ -11,11 +11,11 @@
             font-family: 'Arial', sans-serif;
         }
         .header {
-            background-color: #1e3a8a;
+            background-color: #1a2a44;
             color: #ffffff;
         }
         .footer {
-            background-color: #1e40af;
+            background-color: #1a2a44;
             color: #ffffff;
         }
         .btn-primary {
@@ -35,9 +35,11 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">Bizvest</h1>
             <nav>
-                <a href="{% url 'home' %}" class="text-white mx-4 hover:underline">Home</a>
                 {% if request.session.user_id %}
                     <a href="{% url 'dashboard' %}" class="text-white mx-4 hover:underline">Dashboard</a>
+                    <a href="{% url 'investor_list' %}" class="text-white mx-4 hover:underline">Investors</a>
+                    <a href="{% url 'startup_list' %}" class="text-white mx-4 hover:underline">Startups</a>
+                    <a href="{% url 'offer_list' %}" class="text-white mx-4 hover:underline">Offers</a>
                     <a href="{% url 'profile' %}" class="text-white mx-4 hover:underline">Profile</a>
                     <a href="{% url 'logout' %}" class="text-white mx-4 hover:underline">Logout</a>
                 {% else %}

@@ -4,16 +4,16 @@
     body {
         background: linear-gradient(135deg, #f0f4f8, #ffffff);
         font-family: 'Inter', sans-serif;
-        min-height: 100vh;
         margin: 0;
         padding: 0;
     }
+
     .container {
-        display: flex;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
     }
+
     .sidebar {
         width: 180px;
         background: #1e2a44;
@@ -22,6 +22,7 @@
         height: 100vh;
         position: fixed;
     }
+
     .sidebar a {
         color: #a0aec0;
         text-decoration: none;
@@ -30,37 +31,106 @@
         font-size: 16px;
         transition: color 0.3s;
     }
+
     .sidebar a:hover {
         color: #ffffff;
     }
+
     .content {
-        margin-left: 200px;
-        width: calc(100% - 200px);
-        padding: 20px;
+        margin-left: 100px;
+        padding: 40px;
+        box-sizing: border-box;
+        width: calc(100% - 180px);
     }
+
     .table-container {
-        background: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
+    width: 120%;
+    overflow-x: auto;
+    margin: 0;
+    padding: -0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
     .sort-controls {
         margin-bottom: 20px;
         display: flex;
         justify-content: flex-end;
         gap: 10px;
+        align-items: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        min-width: 1000px;
+    }
+
+    th {
+        background-color: #1e2a44;
+        color: white;
+        padding: 12px;
+        text-align: center;
+        font-weight: 600;
+        border: 1px solid #2d3748;
+    }
+
+    td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    tr:hover {
+        background-color: #f7fafc;
+    }
+
+    select, button {
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    button {
+        background-color: #1e40af;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    button:hover {
+        background-color: #1e3a8a;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            display: none;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .table-container {
+            overflow-x: scroll;
+        }
+
+        table {
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 8px;
+        }
     }
 </style>
 
 <div class="container">
-    <div class="sidebar">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'startup_list' %}">Startups</a>
-        <a href="{% url 'investor_list' %}">Investors</a>
-        <a href="{% url 'deal_list' %}" class="active">Deals</a>
-        <a href="{% url 'offer_list' %}">Offers</a>
-        <a href="{% url 'sector_list' %}">Sectors</a>
-    </div>
     <div class="content">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Deals</h1>
         <div class="sort-controls">
@@ -77,32 +147,32 @@
             </button>
         </div>
         <div class="table-container">
-            <table class="w-full text-left border-collapse">
+            <table>
                 <thead>
-                    <tr class="bg-gray-800 text-white">
-                        <th class="p-3 text-center">Deal ID</th>
-                        <th class="p-3 text-center">Startup</th>
-                        <th class="p-3 text-center">Investor</th>
-                        <th class="p-3 text-center">Date</th>
-                        <th class="p-3 text-center">Amount Invested</th>
-                        <th class="p-3 text-center">Loan Given</th>
-                        <th class="p-3 text-center">Loan Time</th>
-                        <th class="p-3 text-center">Loan Rate</th>
-                        <th class="p-3 text-center">Equity</th>
+                    <tr>
+                        <th>Deal ID</th>
+                        <th>Startup</th>
+                        <th>Investor</th>
+                        <th>Date</th>
+                        <th>Amount Invested</th>
+                        <th>Loan Given</th>
+                        <th>Loan Time</th>
+                        <th>Loan Rate</th>
+                        <th>Equity</th>
                     </tr>
                 </thead>
                 <tbody id="dealTableBody">
                     {% for deal in deals %}
-                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
-                        <td class="p-3 text-center">{{ deal.deal_id }}</td>
-                        <td class="p-3 text-center">{{ deal.startup.startup_name }}</td>
-                        <td class="p-3 text-center">{{ deal.investor.company_name }}</td>
-                        <td class="p-3 text-center">{{ deal.date_of_deal }}</td>
-                        <td class="p-3 text-center">{{ deal.amount_invested }}</td>
-                        <td class="p-3 text-center">{{ deal.loan_given }}</td>
-                        <td class="p-3 text-center">{{ deal.loan_time }}</td>
-                        <td class="p-3 text-center">{{ deal.loan_rate }}</td>
-                        <td class="p-3 text-center">{{ deal.equity }}</td>
+                    <tr>
+                        <td>{{ deal.deal_id }}</td>
+                        <td>{{ deal.startup.startup_name }}</td>
+                        <td>{{ deal.investor.company_name }}</td>
+                        <td>{{ deal.date_of_deal }}</td>
+                        <td>{{ deal.amount_invested }}</td>
+                        <td>{{ deal.loan_given }}</td>
+                        <td>{{ deal.loan_time }}</td>
+                        <td>{{ deal.loan_rate }}%</td>
+                        <td>{{ deal.equity }}%</td>
                     </tr>
                     {% empty %}
                     <tr>
@@ -121,7 +191,7 @@
         const applyButton = document.getElementById("applySort");
         if (sortSelect && applyButton) {
             applyButton.addEventListener("click", sortTable);
-            sortTable(); 
+            sortTable();
         }
     });
 
@@ -139,8 +209,8 @@
             let aValue, bValue;
             switch (sortBy) {
                 case "recency":
-                    aValue = new Date(a.cells[3]?.textContent.trim() || "1970-01-01");
-                    bValue = new Date(b.cells[3]?.textContent.trim() || "1970-01-01");
+                    aValue = new Date(a.cells[3].textContent.trim() || "1970-01-01");
+                    bValue = new Date(b.cells[3].textContent.trim() || "1970-01-01");
                     return bValue - aValue;
                 case "amount_invested":
                 case "loan_given":
@@ -154,8 +224,8 @@
                         "loan_rate": 7,
                         "equity": 8
                     }[sortBy];
-                    aValue = parseFloat(a.cells[index]?.textContent.trim().replace(/[₹,%]/g, "")) || 0;
-                    bValue = parseFloat(b.cells[index]?.textContent.trim().replace(/[₹,%]/g, "")) || 0;
+                    aValue = parseFloat(a.cells[index].textContent.trim().replace(/[₹,%]/g, "")) || 0;
+                    bValue = parseFloat(b.cells[index].textContent.trim().replace(/[₹,%]/g, "")) || 0;
                     return bValue - aValue;
                 default:
                     return 0;
