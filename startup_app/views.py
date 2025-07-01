@@ -9,7 +9,6 @@ from .forms import (
     InvestorRegistrationForm,
     StartupRegistrationForm
 )
-# Create your views here.
 
 def home(request):
     return render(request, 'home.html')
@@ -67,7 +66,7 @@ def login_view(request):
                 user = AppUser.objects.get(username=username)
                 if user.check_pass(password):
                     request.session['user_id'] = user.user_id
-                    return redirect('home')  # redirect to home after login
+                    return redirect('home') 
                 else:
                     error = "Invalid password"
             except AppUser.DoesNotExist:
@@ -93,11 +92,11 @@ def dashboard_view(request):
     }
 
     if user.investor:
-        # Fetch deals where this investor is involved
+        
         recent_deals = Deals.objects.filter(investor=user.investor).select_related('startup')[:5]
         context['recent_deals'] = recent_deals
     elif user.startup:
-        # Fetch offers for this startup
+        
         recent_offers = Offers.objects.filter(startup=user.startup)[:5]
         context['recent_offers'] = recent_offers
 
@@ -126,11 +125,11 @@ def logout_view(request):
     return redirect('login')
 
 def register_view(request):
-    step = request.GET.get('step', 'type')  # default step
+    step = request.GET.get('step', 'type') 
 
     if request.method == 'POST':
         if 'user_type' in request.POST:
-            # First step — user selects type
+            
             form = UserTypeForm(request.POST)
             if form.is_valid():
                 user_type = form.cleaned_data['user_type']

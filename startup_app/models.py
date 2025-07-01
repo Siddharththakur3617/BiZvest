@@ -6,7 +6,7 @@ class Sector(models.Model):
     sector_name = models.CharField(max_length=100, primary_key=True)
 
     class Meta:
-        db_table = "Sector"  # Match class name exactly
+        db_table = "Sector" 
 
     def __str__(self):
         return self.sector_name
@@ -26,7 +26,7 @@ class Startup(models.Model):
     sector = models.ForeignKey(
         'Sector',
         to_field='sector_name',
-        db_column='sector',  # 👈 matches your MySQL table
+        db_column='sector',  
         on_delete=models.CASCADE
     )
 
@@ -113,7 +113,7 @@ class AppUser(models.Model):
     startup = models.ForeignKey('Startup', on_delete=models.CASCADE, null=True, blank=True, db_column='startup_id')
 
     class Meta:
-        db_table = 'user'  # ← crucial: this tells Django to use the correct existing table
+        db_table = 'user'
         constraints = [
             models.CheckConstraint(
                 check=models.Q(investor__isnull=False) | models.Q(startup__isnull=False),
