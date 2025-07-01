@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e0f2fe, #bfdbfe);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-2xl w-full bg-white shadow-2xl rounded-2xl p-8 m-4">
+        <div class="flex items-center space-x-4 mb-6">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                <span class="text-2xl font-bold text-blue-600">{{ user.username|slice:":2"|upper }}</span>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">Welcome, {{ user.username }}!</h1>
+        </div>
+
+        {% if is_investor %}
+            <h2 class="text-2xl font-semibold text-blue-600 mb-4">Investor Dashboard</h2>
+            <div class="space-y-3 mb-6">
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-600 font-medium">Company:</span>
+                    <span class="text-gray-900">{{ user.investor.company_name }}</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-600 font-medium">Net Worth:</span>
+                    <span class="text-gray-900">₹{{ user.investor.net_worth }}</span>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-blue-600 mb-3">Recent Deals</h3>
+            {% if recent_deals %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-blue-100">
+                                <th class="p-3 text-sm font-semibold text-gray-700">Startup</th>
+                                <th class="p-3 text-sm font-semibold text-gray-700">Date</th>
+                                <th class="p-3 text-sm font-semibold text-gray-700">Amount (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for deal in recent_deals %}
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3">{{ deal.startup.startup_name }}</td>
+                                    <td class="p-3">{{ deal.date_of_deal }}</td>
+                                    <td class="p-3">₹{{ deal.amount_invested }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-gray-600">No deals yet.</p>
+            {% endif %}
+
+        {% elif is_startup %}
+            <h2 class="text-2xl font-semibold text-blue-600 mb-4">Startup Dashboard</h2>
+            <div class="space-y-3 mb-6">
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-600 font-medium">Startup:</span>
+                    <span class="text-gray-900">{{ user.startup.startup_name }}</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-600 font-medium">Valuation:</span>
+                    <span class="text-gray-900">₹{{ user.startup.valuation }}</span>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-blue-600 mb-3">Recent Offers</h3>
+            {% if recent_offers %}
+                <ul class="space-y-2">
+                    {% for offer in recent_offers %}
+                        <li class="p-3 bg-gray-50 rounded-lg">
+                            Asked: ₹{{ offer.investment_asked }}, Equity: {{ offer.equity_offered }}%
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-600">No offers yet.</p>
+            {% endif %}
+        {% endif %}
+
+        <hr class="my-6 border-gray-200">
+
+        <div class="flex space-x-4">
+            <a href="{% url 'profile' %}" class="text-blue-600 font-medium hover:underline">My Profile</a>
+            <a href="{% url 'logout' %}" class="text-blue-600 font-medium hover:underline">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
