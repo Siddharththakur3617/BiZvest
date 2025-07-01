@@ -40,32 +40,32 @@ Welcome to *BizVest*, a Django-based web platform inspired by the popular startu
 ## 🚀 Getting Started
 
 ### 1️⃣ Clone the Repository
-bash
+```bash
 git clone https://github.com/Siddharththakur3617/Shark_Tank.git
 cd Shark_Tank
-
+```
 
 ### 2️⃣ Create a Virtual Environment
-bash
+```bash
 python -m venv venv
 source venv/bin/activate      # On Windows: venv\Scripts\activate
-
+```
 
 ### 3️⃣ Install Dependencies
-bash
+```bash
 pip install -r requirements.txt
-
+```
 
 ### 4️⃣ Run Migrations
-bash
+```bash
 python manage.py makemigrations
 python manage.py migrate
-
+```
 
 ### 5️⃣ Start Development Server
-bash
+```bash
 python manage.py runserver
-
+```
 
 ---
 
