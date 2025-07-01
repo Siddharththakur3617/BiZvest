@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from .models import Startup, Investor, Deals, Offers, Sector
-
+from .forms import LoginForm
+from .models import AppUser
 # Create your views here.
 
 def home(request):
@@ -48,3 +49,23 @@ def offer_list(request):
 def sector_list(request):
     sectors = Sector.objects.all()
     return render(request, 'sectors.html', {'sectors': sectors})
+
+def login_view(request):
+    error = None
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            try:
+                user = AppUser.objects.get(username=username)
+                if user.check_pass(password):
+                    request.session['user_id'] = user.user_id
+                    return redirect('home')  # redirect to home after login
+                else:
+                    error = "Invalid password"
+            except AppUser.DoesNotExist:
+                error = "User not found"
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form, 'error': error})
