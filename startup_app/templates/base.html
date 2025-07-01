@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Database</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'startup_list' %}">Startups</a>
+        <a href="{% url 'investor_list' %}">Investors</a>
+        <a href="{% url 'deal_list' %}">Deals</a>
+        <a href="{% url 'offer_list' %}">Offers</a>
+        <a href="{% url 'sector_list' %}">Sectors</a>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

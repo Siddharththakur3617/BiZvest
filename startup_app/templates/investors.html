@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Investors</h1>
+<form method="GET">
+    <input type="text" name="q" placeholder="Search investors..." value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+<table>
+    <tr>
+        <th>Founder</th>
+        <th>Company</th>
+        <th>Description</th>
+        <th>Net Worth</th>
+        <th>Contact</th>
+        <th>Email</th>
+    </tr>
+    {% for investor in investors %}
+    <tr>
+        <td>{{ investor.founder }}</td>
+        <td>{{ investor.company_name }}</td>
+        <td>{{ investor.descr|default:"N/A" }}</td>
+        <td>{{ investor.net_worth }}</td>
+        <td>{{ investor.contact_no }}</td>
+        <td>{{ investor.email }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No investors found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

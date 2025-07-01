@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Deals</h1>
+<table>
+    <tr>
+        <th>Deal ID</th>
+        <th>Startup</th>
+        <th>Investor</th>
+        <th>Date</th>
+        <th>Amount Invested</th>
+        <th>Loan Given</th>
+        <th>Loan Time</th>
+        <th>Loan Rate</th>
+        <th>Equity</th>
+    </tr>
+    {% for deal in deals %}
+    <tr>
+        <td>{{ deal.deal_id }}</td>
+        <td>{{ deal.startup.startup_name }}</td>
+        <td>{{ deal.investor.company_name }}</td>
+        <td>{{ deal.date_of_deal }}</td>
+        <td>{{ deal.amount_invested }}</td>
+        <td>{{ deal.loan_given }}</td>
+        <td>{{ deal.loan_time }}</td>
+        <td>{{ deal.loan_rate }}</td>
+        <td>{{ deal.equity }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="9">No deals found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

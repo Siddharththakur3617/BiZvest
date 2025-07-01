@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Offers</h1>
+<table>
+    <tr>
+        <th>Offer ID</th>
+        <th>Startup</th>
+        <th>Investment Asked</th>
+        <th>Equity Offered</th>
+        <th>Loan Requested</th>
+        <th>Loan Rate</th>
+        <th>Loan Time</th>
+    </tr>
+    {% for offer in offers %}
+    <tr>
+        <td>{{ offer.offer_id }}</td>
+        <td>{{ offer.startup.startup_name }}</td>
+        <td>{{ offer.investment_asked }}</td>
+        <td>{{ offer.equity_offered }}</td>
+        <td>{{ offer.loan_req }}</td>
+        <td>{{ offer.loan_rate }}</td>
+        <td>{{ offer.loan_time }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">No offers found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

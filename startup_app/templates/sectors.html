@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Sectors</h1>
+<table>
+    <tr>
+        <th>Sector Name</th>
+    </tr>
+    {% for sector in sectors %}
+    <tr>
+        <td>{{ sector.sector_name }}</td>
+    </tr>
+    {% empty %}
+    <tr><td>No sectors found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

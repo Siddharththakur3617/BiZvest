@@ -1,0 +1,193 @@
+-- CREATE DATABASE db;
+-- USE db;
+
+-- CREATE TABLE sector (
+--     sector_name VARCHAR(100) PRIMARY KEY
+-- );
+
+-- INSERT INTO sector (sector_name) VALUES
+-- ('AgriTech'), ('HealthTech'), ('EdTech'), ('Clean Energy'), ('FoodTech'),
+-- ('FinTech'), ('WaterTech'), ('E-commerce'), ('FashionTech'), ('Mental Health'),
+-- ('Smart Infrastructure');
+
+-- CREATE TABLE startup (
+--     startup_id INT PRIMARY KEY AUTO_INCREMENT,
+--     startup_name VARCHAR(100) NOT NULL,
+--     sector VARCHAR(100) NOT NULL,
+--     descr TEXT NOT NULL,
+--     founder VARCHAR(100) NOT NULL,
+--     valuation INT NOT NULL CHECK(valuation > 0),
+--     last_year_profit INT,
+--     burn_rate FLOAT CHECK (burn_rate > 0),
+--     contact_no VARCHAR(13) NOT NULL,
+--     email_id VARCHAR(50) NOT NULL,
+--     FOREIGN KEY (sector) REFERENCES sector(sector_name)
+-- );
+
+-- INSERT INTO startup (startup_name, descr, founder, valuation, last_year_profit, burn_rate, contact_no, email_id, sector) VALUES
+-- ('AgroTech Solutions', 'An AI-driven platform for optimizing agricultural yield.', 'Ravi Kumar', 2500000, 120000, 1.5, '9876543210', 'ravi@agrotech.com', 'AgriTech'),
+-- ('MediSmart', 'Smart wearable for remote patient monitoring.', 'Sneha Patel', 4800000, 300000, 2.1, '9123456780', 'sneha@medismart.com', 'HealthTech'),
+-- ('EduNova', 'Online learning platform tailored for rural India.', 'Anuj Mehta', 1500000, 80000, 1.2, '9012345678', 'anuj@edunova.com', 'EdTech'),
+-- ('GreenFuel', 'Biofuel made from organic kitchen waste.', 'Nikita Sharma', 3500000, 200000, 2.3, '9876123456', 'nikita@greenfuel.io', 'Clean Energy'),
+-- ('QuickChef', 'Hyper-local meal delivery from home chefs.', 'Siddharth Reddy', 3000000, 100000, 2.5, '9988776655', 'sid@quickchef.com', 'FoodTech'),
+-- ('FinWhiz', 'Financial literacy gamification app for teens.', 'Aarav Joshi', 2200000, 90000, 1.4, '9123487650', 'aarav@finwhiz.co', 'FinTech'),
+-- ('CleanWave', 'Affordable water purification for rural households.', 'Priya Verma', 4000000, 220000, 1.9, '9988123456', 'priya@cleanwave.org', 'WaterTech'),
+-- ('ByteCart', 'Decentralized e-commerce with crypto support.', 'Raj Singh', 5500000, 250000, 2.0, '9876501234', 'raj@bytecart.dev', 'E-commerce'),
+-- ('TutorBot', 'AI chatbot tutor for school kids.', 'Kavya Nair', 1800000, 60000, 1.1, '9001122334', 'kavya@tutorbot.ai', 'EdTech'),
+-- ('FarmBridge', 'B2B supply chain platform for farmers and retailers.', 'Arun Dev', 3200000, 150000, 1.8, '9090909090', 'arun@farmbridge.com', 'AgriTech'),
+-- ('Lensly', 'Try-on glasses AR app for mobile.', 'Ishaan Khanna', 2000000, 70000, 1.3, '8877665544', 'ishaan@lensly.app', 'FashionTech'),
+-- ('PetBuddy', 'Pet care scheduling and health tracking app.', 'Ankita Rao', 1700000, 40000, 1.6, '9911223344', 'ankita@petbuddy.io', 'HealthTech'),
+-- ('SkillTree', 'Skill-sharing network for freelancers.', 'Karan Malhotra', 2600000, 110000, 1.7, '9555666777', 'karan@skilltree.net', 'E-commerce'),
+-- ('EcoNest', 'Affordable eco-friendly prefab homes.', 'Divya Menon', 4500000, 280000, 2.2, '8899001122', 'divya@econest.in', 'Smart Infrastructure'),
+-- ('AutoIQ', 'Predictive vehicle maintenance AI.', 'Manav Roy', 3100000, 135000, 1.5, '8787878787', 'manav@autoiq.tech', 'Smart Infrastructure'),
+-- ('StyleSwap', 'Fashion resale platform with blockchain verification.', 'Neha Kaur', 2900000, 125000, 1.9, '9112233445', 'neha@styleswap.com', 'FashionTech'),
+-- ('Buildora', 'Marketplace for construction materials and vendors.', 'Tanmay Desai', 3700000, 190000, 2.0, '9667788990', 'tanmay@buildora.org', 'Smart Infrastructure'),
+-- ('FoodPrint', 'Carbon footprint calculator for food items.', 'Riya Shah', 2100000, 95000, 1.2, '9887766554', 'riya@foodprint.eco', 'FoodTech'),
+-- ('MindNest', 'Mental health journaling + AI recommendation system.', 'Varun Kapoor', 2300000, 100000, 1.6, '9001234567', 'varun@mindnest.ai', 'Mental Health'),
+-- ('Parko', 'IoT-based smart parking system.', 'Megha Goyal', 3400000, 160000, 1.8, '9332211445', 'megha@parko.io', 'Smart Infrastructure');
+
+-- CREATE TABLE Investor (
+--     investor_id INT PRIMARY KEY AUTO_INCREMENT,
+--     founder VARCHAR(100) NOT NULL,
+--     company_name VARCHAR(100) NOT NULL,
+--     descr TEXT,
+--     net_worth INT NOT NULL CHECK(net_worth > 0),
+--     contact_no VARCHAR(13) NOT NULL,
+--     email VARCHAR(100) NOT NULL
+-- );
+
+-- INSERT INTO Investor (founder, company_name, descr, net_worth, contact_no, email) VALUES
+-- ('Amit Trivedi', 'GreenCapital Ventures', 'Focused on investing in clean tech and sustainable startups.', 25000000, '9876543211', 'amit@greencapital.com'),
+-- ('Rhea Sood', 'MedTech Angels', 'Specializes in seed funding for digital health innovations.', 32000000, '9988776655', 'rhea@medangels.com'),
+-- ('Kunal Mathur', 'AgriRise Partners', 'Backing agricultural and food supply startups in emerging markets.', 28000000, '9123456789', 'kunal@agririse.in'),
+-- ('Neeraj Chopra', 'FinSphere Investments', 'Invests in fintech, youth finance, and gamified learning platforms.', 45000000, '9090909090', 'neeraj@finsphere.vc'),
+-- ('Meera Nambiar', 'SmartCity Ventures', 'Focuses on smart infrastructure, IoT, and urban tech.', 36000000, '9012345678', 'meera@smartcityventures.io');
+
+-- CREATE TABLE choices (
+--     investor_id INT,
+--     sector_id VARCHAR(100),
+--     interest FLOAT NOT NULL CHECK (interest <= 100),
+--     PRIMARY KEY (investor_id, sector_id),
+--     FOREIGN KEY (investor_id) REFERENCES Investor(investor_id),
+--     FOREIGN KEY (sector_id) REFERENCES sector(sector_name)
+-- );
+
+-- INSERT INTO choices (investor_id, sector_id, interest) VALUES
+-- (1, 'AgriTech', 88.5), (1, 'HealthTech', 91.2), (1, 'EdTech', 78.0),
+-- (1, 'Clean Energy', 96.4), (1, 'FoodTech', 85.3), (1, 'FinTech', 82.0),
+-- (2, 'WaterTech', 90.1), (2, 'E-commerce', 75.0), (2, 'FashionTech', 69.4),
+-- (2, 'Mental Health', 88.7), (2, 'Smart Infrastructure', 94.5), (2, 'Clean Energy', 80.2),
+-- (3, 'FinTech', 99.1), (3, 'AgriTech', 86.3), (3, 'HealthTech', 84.7),
+-- (3, 'EdTech', 73.5), (3, 'FoodTech', 77.7), (3, 'Smart Infrastructure', 88.0),
+-- (4, 'Mental Health', 82.3), (4, 'FashionTech', 79.9), (4, 'E-commerce', 91.5),
+-- (4, 'WaterTech', 74.6), (4, 'AgriTech', 83.2), (4, 'Clean Energy', 89.9),
+-- (5, 'EdTech', 90.0), (5, 'HealthTech', 93.4), (5, 'FoodTech', 84.1),
+-- (5, 'Smart Infrastructure', 95.6), (5, 'FinTech', 87.8), (5, 'Mental Health', 80.0);
+
+-- CREATE TABLE Deals (
+--     deal_id INT PRIMARY KEY AUTO_INCREMENT,
+--     startup_id INT,
+--     investor_id INT,
+--     date_of_deal VARCHAR(10) NOT NULL,
+--     amount_invested INT DEFAULT 0,
+--     loan_given INT DEFAULT 0,
+--     loan_time INT DEFAULT 0,
+--     loan_rate FLOAT DEFAULT 0.0,
+--     equity FLOAT DEFAULT 0.0,
+--     FOREIGN KEY (investor_id) REFERENCES Investor(investor_id),
+--     FOREIGN KEY (startup_id) REFERENCES startup(startup_id)
+-- );
+
+-- INSERT INTO Deals (startup_id, investor_id, date_of_deal, amount_invested, loan_given, loan_time, loan_rate, equity) VALUES
+-- (1, 1, '2024-01-15', 500000, 0, 0, 0.0, 7.5),
+-- (2, 2, '2024-02-10', 800000, 200000, 12, 5.5, 5.0),
+-- (3, 3, '2024-03-01', 650000, 0, 0, 0.0, 6.5),
+-- (4, 4, '2024-03-15', 400000, 100000, 24, 7.0, 3.0),
+-- (5, 5, '2024-04-01', 1000000, 0, 0, 0.0, 10.0),
+-- (6, 1, '2024-04-10', 350000, 150000, 18, 6.0, 4.0),
+-- (7, 2, '2024-05-05', 700000, 0, 0, 0.0, 8.0),
+-- (8, 3, '2024-05-20', 600000, 100000, 12, 6.5, 5.0),
+-- (9, 4, '2024-06-01', 300000, 50000, 6, 5.0, 2.0),
+-- (10, 5, '2024-06-15', 900000, 0, 0, 0.0, 9.0),
+-- (11, 1, '2024-07-01', 750000, 200000, 24, 6.8, 6.0),
+-- (12, 2, '2024-07-10', 450000, 0, 0, 0.0, 4.5),
+-- (13, 3, '2024-08-01', 500000, 100000, 18, 6.2, 5.5),
+-- (14, 4, '2024-08-20', 700000, 0, 0, 0.0, 7.0),
+-- (15, 5, '2024-09-05', 550000, 50000, 6, 4.0, 5.0),
+-- (16, 1, '2024-09-18', 800000, 0, 0, 0.0, 8.5),
+-- (17, 2, '2024-10-01', 600000, 0, 0, 0.0, 6.0),
+-- (18, 3, '2024-10-15', 400000, 100000, 12, 5.5, 3.5),
+-- (19, 4, '2024-11-01', 300000, 150000, 24, 6.5, 2.5),
+-- (20, 5, '2024-11-20', 950000, 0, 0, 0.0, 9.5),
+-- (1, 2, '2024-12-01', 500000, 0, 0, 0.0, 5.0),
+-- (2, 3, '2024-12-15', 550000, 0, 0, 0.0, 5.5),
+-- (3, 4, '2025-01-01', 400000, 100000, 18, 6.0, 4.0),
+-- (4, 5, '2025-01-15', 600000, 0, 0, 0.0, 6.5),
+-- (5, 1, '2025-02-01', 700000, 0, 0, 0.0, 7.5),
+-- (6, 2, '2025-02-18', 300000, 50000, 6, 4.5, 3.0),
+-- (7, 3, '2025-03-01', 500000, 0, 0, 0.0, 5.0),
+-- (8, 4, '2025-03-15', 600000, 100000, 12, 5.8, 5.5),
+-- (9, 5, '2025-04-01', 900000, 0, 0, 0.0, 9.0),
+-- (10, 1, '2025-04-20', 750000, 250000, 24, 7.0, 6.0),
+-- (11, 2, '2025-05-01', 850000, 0, 0, 0.0, 8.0),
+-- (12, 3, '2025-05-15', 400000, 0, 0, 0.0, 4.0),
+-- (13, 4, '2025-06-01', 550000, 0, 0, 0.0, 5.5),
+-- (14, 5, '2025-06-18', 600000, 100000, 18, 6.2, 5.8),
+-- (15, 1, '2025-07-01', 800000, 0, 0, 0.0, 8.0);
+
+-- CREATE TABLE Offers (
+--     offer_id INT PRIMARY KEY AUTO_INCREMENT,
+--     startup_id INT,
+--     investment_asked INT DEFAULT 0,
+--     equity_offered FLOAT DEFAULT 0 CHECK(equity_offered <= 100),
+--     loan_req INT DEFAULT 0,
+--     loan_rate FLOAT DEFAULT 0 CHECK(loan_rate <= 100),
+--     loan_time INT DEFAULT 12,
+--     FOREIGN KEY (startup_id) REFERENCES startup(startup_id)
+-- );
+
+-- INSERT INTO Offers (startup_id, investment_asked, equity_offered, loan_req, loan_rate, loan_time) VALUES
+-- (1, 500000, 7.5, 0, 0.0, 12),
+-- (2, 800000, 6.0, 200000, 5.5, 24),
+-- (3, 600000, 5.5, 0, 0.0, 12),
+-- (4, 450000, 4.0, 150000, 6.5, 18),
+-- (5, 1000000, 10.0, 0, 0.0, 12),
+-- (6, 350000, 3.5, 100000, 5.0, 24),
+-- (7, 700000, 6.5, 0, 0.0, 12),
+-- (8, 900000, 8.0, 0, 0.0, 12),
+-- (9, 400000, 5.0, 50000, 4.5, 12),
+-- (10, 550000, 4.5, 120000, 5.8, 18),
+-- (11, 650000, 6.5, 0, 0.0, 12),
+-- (12, 300000, 3.0, 100000, 5.2, 24),
+-- (13, 450000, 5.0, 0, 0.0, 12),
+-- (14, 700000, 7.0, 0, 0.0, 12),
+-- (15, 800000, 8.0, 150000, 6.2, 24),
+-- (16, 600000, 6.0, 0, 0.0, 12),
+-- (17, 750000, 7.5, 0, 0.0, 12),
+-- (18, 400000, 3.5, 100000, 4.8, 12),
+-- (19, 300000, 2.5, 50000, 4.0, 6),
+-- (20, 900000, 9.0, 0, 0.0, 12),
+-- (1, 600000, 6.5, 50000, 5.0, 12),
+-- (2, 700000, 7.0, 0, 0.0, 12),
+-- (3, 650000, 6.0, 0, 0.0, 12),
+-- (4, 400000, 3.5, 100000, 5.5, 24),
+-- (5, 950000, 9.5, 0, 0.0, 12),
+-- (6, 300000, 2.5, 120000, 6.0, 18),
+-- (7, 720000, 6.8, 0, 0.0, 12),
+-- (8, 880000, 7.5, 0, 0.0, 12),
+-- (9, 420000, 4.8, 60000, 4.2, 12),
+-- (10, 570000, 5.2, 0, 0.0, 12);
+
+-- CREATE TABLE user (
+--     user_id INT PRIMARY KEY AUTO_INCREMENT,
+--     investor_id INT,
+--     startup_id INT,
+--     CHECK (investor_id IS NOT NULL OR startup_id IS NOT NULL),
+--     FOREIGN KEY (startup_id) REFERENCES startup(startup_id),
+--     FOREIGN KEY (investor_id) REFERENCES Investor(investor_id)
+-- );
+
+-- INSERT INTO user (startup_id)
+-- SELECT startup_id FROM startup LIMIT 20;
+-- INSERT INTO user (investor_id)
+-- SELECT investor_id FROM Investor LIMIT 5;
