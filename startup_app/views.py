@@ -22,10 +22,8 @@ def startup_list(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
-
-    user = AppUser.objects.get(pk=user_id)
-
-    if user_id or request.session.get('is_admin'):
+    
+    if user_id:
         startups = Startup.objects.all()
     else:
         startups = Startup.objects.none()
@@ -37,10 +35,7 @@ def investor_list(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
-
-    # user = AppUser.objects.get(pk=user_id)
-
-    if user_id or request.session.get('is_admin'):
+    if user_id:
         investors = Investor.objects.all()
     else:
         investors = Investor.objects.none()
@@ -59,18 +54,16 @@ def deal_list(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
-
-    user = AppUser.objects.get(pk=user_id)
-
-    if user.username == "admin":
-        deals = Deals.objects.select_related('startup', 'investor').all()
-    elif user.investor:
-        deals = Deals.objects.filter(investor=user.investor).select_related('startup')
-    elif user.startup:
-        deals = Deals.objects.filter(startup=user.startup).select_related('investor')
-    else:
-        deals = Deals.objects.none()
-
+    if request.session.get('username') == "admin":
+        deals = Deals.objects.select_related('startup', 'investor').all() 
+    else:     
+        user = AppUser.objects.get(pk=user_id)
+        if user.investor:
+           deals = Deals.objects.filter(investor=user.investor).select_related('startup')
+        elif user.startup:
+           deals = Deals.objects.filter(startup=user.startup).select_related('investor')
+        else:
+           deals = Deals.objects.none()
     return render(request, 'deals.html', {'deals': deals})
 
 def offer_list(request):
@@ -87,9 +80,8 @@ def offer_list(request):
 
 def sector_list(request):
     user_id = request.session.get('user_id')
-    if not user_id:
+    if not user_id and not request.session.get('is_admin'):
         return redirect('login')
-
     selected_sector = request.GET.get('sector', 'all')
     selected_type = request.GET.get('type', 'all')
 
@@ -99,7 +91,6 @@ def sector_list(request):
     for sector in sectors:
         data = {'sector': sector, 'startups': [], 'investors': []}
 
-        # Filter startups
         if selected_type in ['all', 'startup']:
             startups = Startup.objects.filter(sector=sector)
             if selected_sector != 'all' and sector.sector_name != selected_sector:
@@ -165,6 +156,7 @@ def login_view(request):
             if username == 'admin':
                 if password == 'admin123':
                     request.session['username'] = 'admin'
+                    request.session['user_id'] = 1001
                     request.session['is_admin'] = True
                     logger.info("Admin logged in successfully")
                     return redirect('dashboard')
