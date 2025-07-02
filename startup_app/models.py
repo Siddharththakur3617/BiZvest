@@ -6,7 +6,7 @@ class Sector(models.Model):
     sector_name = models.CharField(
         max_length=100,
         primary_key=True,
-        db_column='sector_name'  # Matches the column name in MySQL exactly
+        db_column='sector_name' 
     )
 
     class Meta:
@@ -62,7 +62,7 @@ class Choices(models.Model):
     sector = models.ForeignKey(
         'Sector',
         to_field='sector_name',
-        db_column='sector_id',  # From Choices table — maps to sector_name in Sector table
+        db_column='sector_id',  
         on_delete=models.CASCADE
     )
     interest = models.FloatField()
