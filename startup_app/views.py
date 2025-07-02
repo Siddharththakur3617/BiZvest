@@ -97,7 +97,6 @@ def sector_list(request):
                 startups = startups.none()
             data['startups'] = startups
 
-        # Filter investors based on Choices
         if selected_type in ['all', 'investor']:
             investor_ids = Choices.objects.filter(sector=sector).values_list('investor', flat=True)
             investors = Investor.objects.filter(investor_id__in=investor_ids)
@@ -105,7 +104,6 @@ def sector_list(request):
                 investors = investors.none()
             data['investors'] = investors
 
-        # Only include sectors that match or have data
         if selected_sector == 'all' or data['startups'] or data['investors']:
             sector_data.append(data)
 
