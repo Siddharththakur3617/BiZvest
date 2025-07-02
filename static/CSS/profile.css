@@ -1,0 +1,46 @@
+.hover-card {
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent;
+}
+.hover-card:hover {
+    transform: scale(1.015);
+    border-color: #a855f7;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.15);
+}
+.profile-label {
+    font-weight: 600;
+    color: #6b21a8;
+    font-size: 0.95rem;
+}
+.profile-value {
+    color: #1f2937;
+    font-size: 1.05rem;
+}
+.grid-box {
+    background-color: #f9f5ff;
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid #e9d5ff;
+    transition: all 0.3s ease-in-out;
+}
+.grid-box:hover {
+    transform: scale(1.02);
+    background-color: #ede9fe;
+    border-color: #c084fc;
+    box-shadow: 0 6px 12px rgba(140, 85, 247, 0.1);
+}
+.logout-btn {
+    background-color: #e11d48;
+    padding: 12px 24px;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 10px rgba(229, 62, 62, 0.15);
+}
+.logout-btn:hover {
+    background-color: #be123c;
+    transform: scale(1.03);
+    border-color: #f43f5e;
+    box-shadow: 0 8px 20px rgba(190, 18, 60, 0.2);
+}

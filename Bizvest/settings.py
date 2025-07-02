@@ -132,3 +132,34 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ... other settings ...
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'admin_actions.log',
+        },
+    },
+    'loggers': {
+        'admin_login': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'admin_actions': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+# Security settings for sessions
+SESSION_COOKIE_SECURE = True  # Use HTTPS for sessions
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire session on browser close

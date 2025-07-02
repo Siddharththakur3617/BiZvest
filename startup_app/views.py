@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from .models import Startup, Investor, Deals, Offers, Sector, AppUser, Offers, Deals
+from .models import Startup, Investor, Deals, Offers, Sector, AppUser, Choices
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 from .forms import (
@@ -11,62 +11,149 @@ from .forms import (
     OfferCreationForm
 )
 from datetime import date
+import logging
+
+logger = logging.getLogger('admin_login')
 
 def home(request):
     return render(request, 'home.html')
 
 def startup_list(request):
-    query = request.GET.get('q')
-    sector = request.GET.get('sector')
-    startups = Startup.objects.all()
-    
-    if query:
-        startups = startups.filter(
-            Q(startup_name__icontains=query) |
-            Q(founder__icontains=query) |
-            Q(descr__icontains=query)
-        )
-    if sector:
-        startups = startups.filter(sector__sector_name=sector)
-    
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+
+    user = AppUser.objects.get(pk=user_id)
+
+    if user_id or request.session.get('is_admin'):
+        startups = Startup.objects.all()
+    else:
+        startups = Startup.objects.none()
+
     sectors = Sector.objects.all()
     return render(request, 'startups.html', {'startups': startups, 'sectors': sectors})
 
 def investor_list(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+
+    # user = AppUser.objects.get(pk=user_id)
+
+    if user_id or request.session.get('is_admin'):
+        investors = Investor.objects.all()
+    else:
+        investors = Investor.objects.none()
+
     query = request.GET.get('q')
-    investors = Investor.objects.all()
-    
     if query:
         investors = investors.filter(
             Q(founder__icontains=query) |
             Q(company_name__icontains=query) |
             Q(descr__icontains=query)
         )
-    
+
     return render(request, 'investors.html', {'investors': investors})
 
 def deal_list(request):
-    deals = Deals.objects.select_related('startup', 'investor').all()
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+
+    user = AppUser.objects.get(pk=user_id)
+
+    if user.username == "admin":
+        deals = Deals.objects.select_related('startup', 'investor').all()
+    elif user.investor:
+        deals = Deals.objects.filter(investor=user.investor).select_related('startup')
+    elif user.startup:
+        deals = Deals.objects.filter(startup=user.startup).select_related('investor')
+    else:
+        deals = Deals.objects.none()
+
     return render(request, 'deals.html', {'deals': deals})
 
 def offer_list(request):
     user_id = request.session.get('user_id')
-    user = AppUser.objects.get(pk=user_id) if user_id else None
+    if not user_id:
+        return redirect('login')
 
-    offers = Offers.objects.select_related('startup').all()
+    if user_id or request.session.get('is_admin'):
+        offers = Offers.objects.select_related('startup').all()
+    else:
+        offers = Offers.objects.none()
 
-    context = {
-        'offers': offers,
-        'is_startup': bool(user and user.startup),
-        'is_investor': bool(user and user.investor),
-        'user': user,
-    }
-
-    return render(request, 'offers.html', context)
+    return render(request, 'offers.html', {'offers': offers})
 
 def sector_list(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+
+    selected_sector = request.GET.get('sector', 'all')
+    selected_type = request.GET.get('type', 'all')
+
     sectors = Sector.objects.all()
-    return render(request, 'sectors.html', {'sectors': sectors})
+    sector_data = []
+
+    for sector in sectors:
+        data = {'sector': sector, 'startups': [], 'investors': []}
+
+        # Filter startups
+        if selected_type in ['all', 'startup']:
+            startups = Startup.objects.filter(sector=sector)
+            if selected_sector != 'all' and sector.sector_name != selected_sector:
+                startups = startups.none()
+            data['startups'] = startups
+
+        # Filter investors based on Choices
+        if selected_type in ['all', 'investor']:
+            investor_ids = Choices.objects.filter(sector=sector).values_list('investor', flat=True)
+            investors = Investor.objects.filter(investor_id__in=investor_ids)
+            if selected_sector != 'all' and sector.sector_name != selected_sector:
+                investors = investors.none()
+            data['investors'] = investors
+
+        # Only include sectors that match or have data
+        if selected_sector == 'all' or data['startups'] or data['investors']:
+            sector_data.append(data)
+
+    context = {
+        'sectors': sectors,
+        'sector_data': sector_data,
+        'selected_sector': selected_sector,
+        'selected_type': selected_type,
+    }
+
+    return render(request, 'sectors.html', context)
+
+def delete_user(request, user_id):
+    logger = logging.getLogger('admin_actions')
+    if not request.session.get('is_admin'):
+        return HttpResponseForbidden("Only admin can delete users.")
+
+    if request.method == 'POST':
+        try:
+            user_to_delete = AppUser.objects.get(pk=user_id)
+            if user_to_delete.username == 'admin':
+                messages.error(request, "Cannot delete the admin account.")
+                logger.warning("Attempt to delete admin account blocked")
+            else:
+                username = user_to_delete.username
+                user_to_delete.delete()
+                messages.success(request, f"User '{username}' deleted successfully.")
+                logger.info(f"Admin deleted user '{username}' (ID: {user_id})")
+        except AppUser.DoesNotExist:
+            messages.error(request, "User not found.")
+            logger.warning(f"Admin attempted to delete non-existent user ID {user_id}")
+        return redirect('dashboard')
+    
+    try:
+        user_to_delete = AppUser.objects.get(pk=user_id)
+        return render(request, 'confirm_delete_user.html', {'user_to_delete': user_to_delete})
+    except AppUser.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect('dashboard')
 
 def login_view(request):
     error = None
@@ -75,20 +162,48 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            try:
-                user = AppUser.objects.get(username=username)
-                if user.check_pass(password):
-                    request.session['user_id'] = user.user_id
-                    return redirect('home') 
+            if username == 'admin':
+                if password == 'admin123':
+                    request.session['username'] = 'admin'
+                    request.session['is_admin'] = True
+                    logger.info("Admin logged in successfully")
+                    return redirect('dashboard')
                 else:
-                    error = "Invalid password"
-            except AppUser.DoesNotExist:
-                error = "User not found"
+                    error = "Invalid password for admin"
+                    logger.warning(f"Failed admin login attempt with password: {password}")
+            else:
+                try:
+                    user = AppUser.objects.get(username=username)
+                    if user.check_pass(password):
+                        request.session['user_id'] = user.user_id
+                        request.session['is_admin'] = False
+                        request.session['username'] = username
+                        logger.info(f"User {username} logged in successfully")
+                        return redirect('dashboard')
+                    else:
+                        error = "Invalid password"
+                        logger.warning(f"Failed login attempt for user substituting user {username}")
+                except AppUser.DoesNotExist:
+                    error = "User not found"
+                    logger.warning(f"Login attempt for non-existent user {username}")
+        else:
+            error = "Invalid form input"
     else:
         form = LoginForm()
+
     return render(request, 'login.html', {'form': form, 'error': error})
 
 def dashboard_view(request):
+    if request.session.get('is_admin'):
+        user = type('AdminUser', (), {'username': 'admin'})()
+        context = {
+            'user': user,
+            'is_admin': True,
+            'is_startup': False,
+            'is_investor': False,
+        }
+        return render(request, 'dashboard.html', context)
+
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
@@ -100,29 +215,33 @@ def dashboard_view(request):
 
     context = {
         'user': user,
+        'is_admin': False,
         'is_investor': user.investor is not None,
         'is_startup': user.startup is not None,
     }
 
     if user.investor:
-        recent_deals = Deals.objects.filter(investor=user.investor).select_related('startup').order_by('-date_of_deal')[:]
-        context['recent_deals'] = recent_deals
-
+        context['recent_deals'] = Deals.objects.filter(investor=user.investor).select_related('startup')[:5]
     elif user.startup:
-        recent_offers = Offers.objects.filter(startup=user.startup).order_by('-offer_id')[:]
-        context['recent_offers'] = recent_offers
-    
-    if user.startup:
-        startup_msg = request.session.pop('startup_deal_message', None)
-        if startup_msg:
-            messages.success(request, startup_msg)
+        context['recent_offers'] = Offers.objects.filter(startup=user.startup)[:5]
 
     return render(request, 'dashboard.html', context)
 
 def profile_view(request):
     user_id = request.session.get('user_id')
-    if not user_id:
+
+    if user_id is None:
         return redirect('login')
+
+    if request.session.get('is_admin'):
+        user = type('AdminUser', (), {'username': 'admin'})()
+        context = {
+            'user': user,
+            'is_admin': True,
+            'is_startup': False,
+            'is_investor': False,
+        }
+        return render(request, 'profile.html', context)
 
     try:
         user = AppUser.objects.get(pk=user_id)
@@ -131,6 +250,7 @@ def profile_view(request):
 
     context = {
         'user': user,
+        'is_admin': False,
         'is_investor': user.investor is not None,
         'is_startup': user.startup is not None,
     }
@@ -146,7 +266,6 @@ def register_view(request):
 
     if request.method == 'POST':
         if 'user_type' in request.POST:
-            
             form = UserTypeForm(request.POST)
             if form.is_valid():
                 user_type = form.cleaned_data['user_type']
@@ -191,7 +310,6 @@ def register_view(request):
                     user.save()
                     return redirect('login')
     else:
-        # GET requests
         if step == 'investor':
             form = InvestorRegistrationForm()
         elif step == 'startup':
@@ -252,8 +370,6 @@ def accept_offer(request, offer_id):
 
     try:
         offer = Offers.objects.get(pk=offer_id)
-
-        # Create a new deal
         deal = Deals.objects.create(
             startup=offer.startup,
             investor=user.investor,
@@ -264,18 +380,12 @@ def accept_offer(request, offer_id):
             loan_rate=offer.loan_rate,
             equity=offer.equity_offered
         )
-
-        # Delete the offer
         offer.delete()
-
-        # Message for investor
         messages.success(request, "Congratulations, Offer accepted and deal created !!")
-
         startup_user = AppUser.objects.filter(startup=deal.startup).first()
         if startup_user:
             request.session['startup_deal_message'] = f"🎉 Your offer has been accepted by {deal.investor.company_name}!"
-
     except Offers.DoesNotExist:
         messages.error(request, "Offer not found.")
 
-    return redirect('dashboard')  
+    return redirect('dashboard')

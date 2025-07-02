@@ -1,62 +1,64 @@
 {% extends 'base.html' %}
-{%load static %}
+{% load static %}
+
 {% block content %}
 
-<div class="container">
-    <div class="content">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Deals</h1>
-        <div class="sort-controls">
-            <select id="sortOptions" class="bg-white border border-gray-300 rounded-md p-2 text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="recency">Sort by Recency</option>
-                <option value="amount_invested">Sort by Amount Invested</option>
-                <option value="loan_given">Sort by Loan Given</option>
-                <option value="loan_time">Sort by Loan Time</option>
-                <option value="loan_rate">Sort by Loan Rate</option>
-                <option value="equity">Sort by Equity</option>
-            </select>
-            <button id="applySort" class="bg-blue-600 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200">
-                Apply Sort
-            </button>
-        </div>
-        
-        <link rel="stylesheet" href="{% static 'CSS/table.css' %}">
+<link rel="stylesheet" href="{% static 'CSS/table.css' %}">
+<div class="max-w-7xl w-full bg-white rounded-2xl p-6 md:p-8 lg:p-10 mx-auto hover-card">
+    <h1 class="text-3xl font-bold text-purple-700 mb-6 text-center">Deals</h1>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Deal ID</th>
-                        <th>Startup</th>
-                        <th>Investor</th>
-                        <th>Date</th>
-                        <th>Amount Invested</th>
-                        <th>Loan Given</th>
-                        <th>Loan Time</th>
-                        <th>Loan Rate</th>
-                        <th>Equity</th>
+    <div class="flex flex-col md:flex-row gap-4 justify-center mb-6">
+        <select id="sortOptions"
+            class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-64 text-sm md:text-base hover-card">
+            <option value="recency">Sort by Recency</option>
+            <option value="amount_invested">Sort by Amount Invested</option>
+            <option value="loan_given">Sort by Loan Given</option>
+            <option value="loan_time">Sort by Loan Time</option>
+            <option value="loan_rate">Sort by Loan Rate</option>
+            <option value="equity">Sort by Equity</option>
+        </select>
+
+        <button id="applySort"
+            class="p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full md:w-auto text-sm md:text-base hover-card">
+            Apply Sort
+        </button>
+    </div>
+
+    <div class="overflow-x-auto mt-4 hover-card rounded-xl">
+        <table class="min-w-full text-sm md:text-base border-separate" style="border-spacing: 0;">
+            <thead>
+                <tr class="text-purple-800">
+                    <th class="p-3 text-left rounded-tl-xl">Deal ID</th>
+                    <th class="p-3 text-left">Startup</th>
+                    <th class="p-3 text-left">Investor</th>
+                    <th class="p-3 text-left">Date</th>
+                    <th class="p-3 text-left">Amount Invested</th>
+                    <th class="p-3 text-left">Loan Given</th>
+                    <th class="p-3 text-left">Loan Time</th>
+                    <th class="p-3 text-left">Loan Rate</th>
+                    <th class="p-3 text-left rounded-tr-xl">Equity</th>
+                </tr>
+            </thead>
+            <tbody id="dealTableBody">
+                {% for deal in deals %}
+                    <tr class="hover-table-row bg-white border-b border-gray-200 transition">
+                        <td class="p-3">{{ deal.deal_id }}</td>
+                        <td class="p-3">{{ deal.startup.startup_name }}</td>
+                        <td class="p-3">{{ deal.investor.company_name }}</td>
+                        <td class="p-3">{{ deal.date_of_deal }}</td>
+                        <td class="p-3">{{ deal.amount_invested }}</td>
+                        <td class="p-3">{{ deal.loan_given }}</td>
+                        <td class="p-3">{{ deal.loan_time }}</td>
+                        <td class="p-3">{{ deal.loan_rate }}%</td>
+                        <td class="p-3">{{ deal.equity }}%</td>
                     </tr>
-                </thead>
-                <tbody id="dealTableBody">
-                    {% for deal in deals %}
-                    <tr>
-                        <td>{{ deal.deal_id }}</td>
-                        <td>{{ deal.startup.startup_name }}</td>
-                        <td>{{ deal.investor.company_name }}</td>
-                        <td>{{ deal.date_of_deal }}</td>
-                        <td>{{ deal.amount_invested }}</td>
-                        <td>{{ deal.loan_given }}</td>
-                        <td>{{ deal.loan_time }}</td>
-                        <td>{{ deal.loan_rate }}%</td>
-                        <td>{{ deal.equity }}%</td>
-                    </tr>
-                    {% empty %}
+                {% empty %}
                     <tr>
                         <td colspan="9" class="p-4 text-center text-gray-500">No deals found.</td>
                     </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 

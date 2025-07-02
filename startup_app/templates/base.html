@@ -1,42 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investment Platform</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .sidebar {
-            width: 200px;
-            height: 100vh;
-            background-color: #1a2a44;
-            position: fixed;
-            padding-top: 20px;
-        }
-        .sidebar a {
-            padding: 15px 20px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-        }
-        .sidebar a:hover {
-            background-color: #2e4057;
-        }
-        .content {
-            margin-left: 220px;
-            padding: 20px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
 </head>
 <body>
     <div class="sidebar">
         <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
         <a href="{% url 'startup_list' %}">Startups</a>
         <a href="{% url 'investor_list' %}">Investors</a>
         <a href="{% url 'deal_list' %}">Deals</a>

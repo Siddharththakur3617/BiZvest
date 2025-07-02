@@ -38,7 +38,10 @@ class StartupRegistrationForm(forms.Form):
     sector = forms.ModelChoiceField(queryset=Sector.objects.all(), empty_label="Select Sector")
     descr = forms.CharField(widget=forms.Textarea, required=False)
 
-class OfferCreationForm(forms.ModelForm):
+class SectorForm(forms.ModelForm):
     class Meta:
-        model = Offers
-        fields = ['investment_asked', 'equity_offered', 'loan_req', 'loan_rate', 'loan_time']
+        model = Sector
+        fields = ['sector_name']
+        widgets = {
+            'sector_name': forms.TextInput(attrs={'required': True, 'maxlength': 100}),
+        }

@@ -1,64 +1,69 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<div class="container">
-    <div class="content">
-        <div class="header-section flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-gray-800 mb-0">Offers</h1>
-            {% if is_startup %}
-                <a href="{% url 'create_offer' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Create Offer
-                </a>
-            {% endif %}
-        </div>
 
-        <link rel="stylesheet" href="{% static 'CSS/table.css' %}">
-        <div class="table-container mt-6">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Offer ID</th>
-                        <th>Startup</th>
-                        <th>Investment Asked</th>
-                        <th>Equity Offered</th>
-                        <th>Loan Requested</th>
-                        <th>Loan Rate</th>
-                        <th>Loan Time</th>
-                        {% if is_startup or is_investor %}
-                        <th>Action</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for offer in offers %}
-                    <tr>
-                        <td>{{ offer.offer_id }}</td>
-                        <td>{{ offer.startup.startup_name }}</td>
-                        <td>{{ offer.investment_asked }}</td>
-                        <td>{{ offer.equity_offered }}</td>
-                        <td>{{ offer.loan_req }}</td>
-                        <td>{{ offer.loan_rate }}%</td>
-                        <td>{{ offer.loan_time }}</td>
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/table.css' %}">
+
+<div class="max-w-7xl w-full bg-white rounded-2xl p-6 md:p-8 lg:p-10 mx-auto hover-card">
+    <div class="flex flex-col justify-center items-center mb-6 gap-4">
+    <h1 class="text-3xl font-bold text-purple-700 text-center">Offers</h1>
+
+    {% if is_startup %}
+        <a href="{% url 'create_offer' %}"
+           class="p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm md:text-base hover-card">
+            Create Offer
+        </a>
+    {% endif %}
+</div>
+
+
+    <div class="overflow-x-auto mt-4 hover-card rounded-xl">
+        <table class="min-w-full text-sm md:text-base border-separate" style="border-spacing: 0;">
+            <thead>
+                <tr class="text-purple-800">
+                    <th class="p-3 text-left rounded-tl-xl">Offer ID</th>
+                    <th class="p-3 text-left">Startup</th>
+                    <th class="p-3 text-left">Investment Asked</th>
+                    <th class="p-3 text-left">Equity Offered</th>
+                    <th class="p-3 text-left">Loan Requested</th>
+                    <th class="p-3 text-left">Loan Rate</th>
+                    <th class="p-3 text-left">Loan Time</th>
+                    {% if is_startup or is_investor %}
+                        <th class="p-3 text-left rounded-tr-xl">Action</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for offer in offers %}
+                    <tr class="hover-table-row bg-white border-b border-gray-200 transition">
+                        <td class="p-3">{{ offer.offer_id }}</td>
+                        <td class="p-3">{{ offer.startup.startup_name }}</td>
+                        <td class="p-3">{{ offer.investment_asked }}</td>
+                        <td class="p-3">{{ offer.equity_offered }}</td>
+                        <td class="p-3">{{ offer.loan_req }}</td>
+                        <td class="p-3">{{ offer.loan_rate }}%</td>
+                        <td class="p-3">{{ offer.loan_time }}</td>
                         {% if is_startup and offer.startup == user.startup %}
-                        <td>
-                            <a href="{% url 'cancel_offer' offer.offer_id %}" class="text-red-600 hover:underline">Cancel</a>
-                        </td>
+                            <td class="p-3">
+                                <a href="{% url 'cancel_offer' offer.offer_id %}"
+                                   class="text-red-600 hover:underline">Cancel</a>
+                            </td>
                         {% elif is_investor %}
-                        <td>
-                            <a href="{% url 'accept_offer' offer.offer_id %}" class="text-green-600 hover:underline">Accept</a>
-                        </td>
+                            <td class="p-3">
+                                <a href="{% url 'accept_offer' offer.offer_id %}"
+                                   class="text-green-600 hover:underline">Accept</a>
+                            </td>
                         {% else %}
-                        <td>—</td>
+                            <td class="p-3">—</td>
                         {% endif %}
                     </tr>
-                    {% empty %}
+                {% empty %}
                     <tr>
                         <td colspan="8" class="p-4 text-center text-gray-500">No offers found.</td>
                     </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

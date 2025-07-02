@@ -1,16 +1,100 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<h1>Sectors</h1>
-<table>
-    <tr>
-        <th>Sector Name</th>
-    </tr>
-    {% for sector in sectors %}
-    <tr>
-        <td>{{ sector.sector_name }}</td>
-    </tr>
+<link rel="stylesheet" href="{% static 'CSS/table.css' %}">
+
+<div class="max-w-7xl w-full bg-white rounded-2xl p-6 md:p-8 lg:p-10 mx-auto hover-card">
+    <h1 class="text-3xl font-bold text-purple-700 mb-6 text-center">Sectors</h1>
+
+    <form method="GET" class="flex flex-col md:flex-row gap-4 mb-6 justify-center">
+        <select name="sector"
+                class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-48 text-sm md:text-base hover-card">
+            <option value="all">All Sectors</option>
+            {% for sector in sectors %}
+                <option value="{{ sector.sector_name }}" {% if selected_sector == sector.sector_name %}selected{% endif %}>
+                    {{ sector.sector_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="type"
+                class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-48 text-sm md:text-base hover-card">
+            <option value="all" {% if selected_type == "all" %}selected{% endif %}>All</option>
+            <option value="startup" {% if selected_type == "startup" %}selected{% endif %}>Startups</option>
+            <option value="investor" {% if selected_type == "investor" %}selected{% endif %}>Investors</option>
+        </select>
+
+        <button type="submit"
+                class="p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full md:w-auto text-sm md:text-base hover-card">
+            Apply Filters
+        </button>
+    </form>
+
+    {% for data in sector_data %}
+        <h2 class="text-xl font-semibold text-blue-900 mt-10 mb-4 text-center">{{ data.sector.sector_name }}</h2>
+
+        {% if selected_type == "all" or selected_type == "startup" %}
+            <h3 class="text-lg font-medium text-gray-700 mb-2">Startups</h3>
+            {% if data.startups %}
+                <div class="overflow-x-auto mb-6">
+                    <table class="min-w-full text-sm md:text-base border-separate" style="border-spacing: 0;">
+                        <thead>
+                            <tr class="text-purple-800">
+                                <th class="p-3 text-left">Name</th>
+                                <th class="p-3 text-left">Founder</th>
+                                <th class="p-3 text-left">Valuation (₹)</th>
+                                <th class="p-3 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for startup in data.startups %}
+                                <tr class="hover-table-row bg-white border-b border-gray-200 transition">
+                                    <td class="p-3">{{ startup.startup_name }}</td>
+                                    <td class="p-3">{{ startup.founder }}</td>
+                                    <td class="p-3">{{ startup.valuation }}</td>
+                                    <td class="p-3">{{ startup.descr|truncatewords:20 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-gray-500">No startups found in this sector.</p>
+            {% endif %}
+        {% endif %}
+
+        {% if selected_type == "all" or selected_type == "investor" %}
+            <h3 class="text-lg font-medium text-gray-700 mb-2">Investors</h3>
+            {% if data.investors %}
+                <div class="overflow-x-auto mb-6">
+                    <table class="min-w-full text-sm md:text-base border-separate" style="border-spacing: 0;">
+                        <thead>
+                            <tr class="text-purple-800">
+                                <th class="p-3 text-left">Company Name</th>
+                                <th class="p-3 text-left">Founder</th>
+                                <th class="p-3 text-left">Net Worth (₹)</th>
+                                <th class="p-3 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for investor in data.investors %}
+                                <tr class="hover-table-row bg-white border-b border-gray-200 transition">
+                                    <td class="p-3">{{ investor.company_name }}</td>
+                                    <td class="p-3">{{ investor.founder }}</td>
+                                    <td class="p-3">{{ investor.net_worth }}</td>
+                                    <td class="p-3">{{ investor.descr|truncatewords:20 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-gray-500">No investors found in this sector.</p>
+            {% endif %}
+        {% endif %}
     {% empty %}
-    <tr><td>No sectors found.</td></tr>
+        <p class="text-gray-500 text-center mt-6">No sectors or data found.</p>
     {% endfor %}
-</table>
+</div>
 {% endblock %}

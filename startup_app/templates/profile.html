@@ -1,99 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(to bottom right, #e0f2fe, #bfdbfe);
-            min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-<body class="flex items-center justify-center p-4">
-    <div class="max-w-lg w-full bg-white shadow-2xl rounded-2xl p-8 m-4">
-        <div class="flex flex-col items-center">
-            <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <span class="text-3xl font-bold text-blue-600">{{ user.username|slice:":2"|upper }}</span>
-            </div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-6">User Profile</h2>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/profile.css' %}">
+
+<div class="max-w-4xl w-full bg-white rounded-2xl p-6 md:p-8 lg:p-10 mx-auto hover-card">
+    <h1 class="text-3xl font-bold text-purple-700 mb-6 text-center">User Profile</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="grid-box">
+            <p class="profile-label mb-1">Username</p>
+            <p class="profile-value">{{ user.username }}</p>
         </div>
-        
-        <div class="space-y-4">
-            <div class="flex items-center space-x-2">
-                <span class="text-gray-600 font-medium">Username:</span>
-                <span class="text-gray-900">{{ user.username }}</span>
-            </div>
-            
-            {% if is_investor %}
-                <h3 class="text-xl font-semibold text-blue-600 mt-6">Investor Details</h3>
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Company:</span>
-                        <span class="text-gray-900">{{ user.investor.company_name }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Founder:</span>
-                        <span class="text-gray-900">{{ user.investor.founder }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Email:</span>
-                        <span class="text-gray-900">{{ user.investor.email }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Net Worth:</span>
-                        <span class="text-gray-900">₹{{ user.investor.net_worth }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Contact:</span>
-                        <span class="text-gray-900">{{ user.investor.contact_no }}</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-gray-600 font-medium">Description:</span>
-                        <p class="text-gray-700 mt-1">{{ user.investor.descr }}</p>
-                    </div>
-                </div>
-            {% elif is_startup %}
-                <h3 class="text-xl font-semibold text-blue-600 mt-6">Startup Details</h3>
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Startup:</span>
-                        <span class="text-gray-900">{{ user.startup.startup_name }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Founder:</span>
-                        <span class="text-gray-900">{{ user.startup.founder }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Email:</span>
-                        <span class="text-gray-900">{{ user.startup.email_id }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Valuation:</span>
-                        <span class="text-gray-900">₹{{ user.startup.valuation }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Contact:</span>
-                        <span class="text-gray-900">{{ user.startup.contact_no }}</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-gray-600 font-medium">Sector:</span>
-                        <span class="text-gray-900">{{ user.startup.sector }}</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-gray-600 font-medium">Description:</span>
-                        <p class="text-gray-700 mt-1">{{ user.startup.descr }}</p>
-                    </div>
-                </div>
-            {% endif %}
-            
-            <div class="mt-6">
-                <a href="{% url 'logout' %}" class="inline-block bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200">Logout</a>
-            </div>
+        <div class="grid-box">
+            <p class="profile-label mb-1">Email</p>
+            <p class="profile-value">{{ user.email }}</p>
         </div>
+        <div class="grid-box">
+            <p class="profile-label mb-1">First Name</p>
+            <p class="profile-value">{{ user.first_name|default:"—" }}</p>
+        </div>
+        <div class="grid-box">
+            <p class="profile-label mb-1">Last Name</p>
+            <p class="profile-value">{{ user.last_name|default:"—" }}</p>
+        </div>
+        {% if is_startup %}
+        <div class="grid-box sm:col-span-2">
+            <p class="profile-label mb-1">Startup</p>
+            <p class="profile-value">{{ user.startup.startup_name }}</p>
+        </div>
+        {% elif is_investor %}
+        <div class="grid-box sm:col-span-2">
+            <p class="profile-label mb-1">Investor</p>
+            <p class="profile-value">{{ user.investor.company_name }}</p>
+        </div>
+        {% endif %}
     </div>
-</body>
-</html>
+
+    <div class="mt-10 text-center">
+        <a href="{% url 'logout' %}" class="logout-btn text-white shadow-md hover:shadow-lg inline-block">
+            Logout
+        </a>
+    </div>
+</div>
+{% endblock %}

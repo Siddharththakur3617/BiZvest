@@ -1,0 +1,101 @@
+body {
+    background: linear-gradient(135deg, #d4c4e1, #e6e0f2);
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    overflow-x: hidden;
+    color: #1e293b;
+}
+
+.dashboard-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.dashboard-header {
+    background: linear-gradient(90deg, #6b48ff, #a88bc2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.dashboard-header:hover {
+    background: linear-gradient(90deg, #5a3fe5, #9773b0);
+}
+
+.action-card {
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.action-card.bg-green-100 a { color: #166534; }
+.action-card.bg-green-100 a:hover { color: #14532d; }
+.action-card.bg-blue-100 a { color: #1e40af; }
+.action-card.bg-blue-100 a:hover { color: #1e3a8a; }
+.action-card.bg-yellow-100 a { color: #92400e; }
+.action-card.bg-yellow-100 a:hover { color: #7c2d12; }
+.action-card.bg-indigo-100 a { color: #4c1d95; }
+.action-card.bg-indigo-100 a:hover { color: #3b1a74; }
+.action-card.bg-orange-100 a { color: #c2410c; }
+.action-card.bg-orange-100 a:hover { color: #9a3412; }
+
+.dashboard-table tr:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-table th, .dashboard-table td {
+    transition: all 0.3s ease;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead {
+    border-radius: 8px;
+}
+
+th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    background-color: #f3f4f6;
+}
+
+td {
+    padding: 12px;
+}
+
+tr {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+a:hover {
+    text-decoration: underline;
+}

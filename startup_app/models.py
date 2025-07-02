@@ -3,10 +3,14 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password, check_password
 
 class Sector(models.Model):
-    sector_name = models.CharField(max_length=100, primary_key=True)
+    sector_name = models.CharField(
+        max_length=100,
+        primary_key=True,
+        db_column='sector_name'  # Matches the column name in MySQL exactly
+    )
 
     class Meta:
-        db_table = "Sector" 
+        db_table = "Sector"
 
     def __str__(self):
         return self.sector_name
@@ -58,7 +62,7 @@ class Choices(models.Model):
     sector = models.ForeignKey(
         'Sector',
         to_field='sector_name',
-        db_column='sector_name',
+        db_column='sector_id',  # From Choices table — maps to sector_name in Sector table
         on_delete=models.CASCADE
     )
     interest = models.FloatField()
