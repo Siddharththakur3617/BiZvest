@@ -28,7 +28,7 @@ Welcome to *BizVest*, a Django-based web platform inspired by the popular startu
 ### 🗃 Database
 - Default: *SQLite3*
 - (Easily switchable to PostgreSQL/MySQL)
-
+- We used MySQL
 ---
 
 ## 📂 Project Structure (Simplified)
