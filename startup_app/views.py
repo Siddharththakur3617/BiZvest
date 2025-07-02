@@ -90,7 +90,6 @@ def sector_list(request):
 
     for sector in sectors:
         data = {'sector': sector, 'startups': [], 'investors': []}
-
         if selected_type in ['all', 'startup']:
             startups = Startup.objects.filter(sector=sector)
             if selected_sector != 'all' and sector.sector_name != selected_sector:

@@ -15,8 +15,9 @@ def is_admin(request):
 def add_sector_view(request):
     if not request.session.get('is_admin'):
         return HttpResponseForbidden("Only admin can access this.")
-
+    # return HttpResponseForbidden('Helo')
     if request.method == 'POST':
+        # return HttpResponseForbidden('Helo')
         form = SectorForm(request.POST)
         if form.is_valid():
             sector_name = form.cleaned_data['sector_name']
