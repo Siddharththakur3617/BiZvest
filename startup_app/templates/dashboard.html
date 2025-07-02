@@ -5,98 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to bottom right, #e0f2fe, #bfdbfe);
-            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e6e0f2, #d4c4e1, #c1b0d1);
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 2rem;
+            align-items: center;
+            padding: 1rem;
+            overflow-x: hidden;
+            color: #2d3748;
+        }
+        .glass-card {
+            background: linear-gradient(135deg, #f5f2f9, #e8e1f0);
+            backdrop-filter: blur(6px);
+            border: 3px solid #a88bc2;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        .glass-hover:hover {
+            transform: scale(1.03) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #6b48ff, #a88bc2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
 <body>
-    <div class="max-w-2xl w-full bg-white shadow-2xl rounded-2xl p-8 m-4">
-        <div class="flex items-center space-x-4 mb-6">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                <span class="text-2xl font-bold text-blue-600">{{ user.username|slice:":2"|upper }}</span>
+    <div class="max-w-4xl w-full glass-card p-6 md:p-10 m-4 glass-hover transition duration-300">
+        <div class="flex items-center space-x-8 mb-10 border-b border-gray-200/50 pb-6">
+            <div class="w-24 h-24 bg-gradient-to-br from-indigo-100 to-blue-100 rounded-full flex items-center justify-center shadow-md">
+                <span class="text-4xl font-semibold text-indigo-700">{{ user.username|slice:":2"|upper }}</span>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800">Welcome, {{ user.username }}!</h1>
+            <div>
+                <h1 class="text-4xl md:text-5xl font-bold gradient-text drop-shadow-md">
+                    Welcome, {{ user.username }}!
+                </h1>
+                <p class="text-md text-gray-700 mt-2">Empower your financial journey with BiZvest.</p>
+            </div>
         </div>
 
         {% if is_investor %}
-            <h2 class="text-2xl font-semibold text-blue-600 mb-4">Investor Dashboard</h2>
-            <div class="space-y-3 mb-6">
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-600 font-medium">Company:</span>
-                    <span class="text-gray-900">{{ user.investor.company_name }}</span>
+            <h2 class="text-3xl md:text-4xl font-semibold gradient-text mb-8">
+                Investor Dashboard
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="glass-card p-5 rounded-xl shadow-lg glass-hover transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Company Details</h3>
+                    <p class="text-gray-600">Company: <span class="text-gray-900 font-medium">{{ user.investor.company_name }}</span></p>
+                    <p class="text-gray-600">Net Worth: <span class="text-gray-900 font-medium">₹{{ user.investor.net_worth }}</span></p>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-600 font-medium">Net Worth:</span>
-                    <span class="text-gray-900">₹{{ user.investor.net_worth }}</span>
+                <div class="glass-card p-5 rounded-xl shadow-lg glass-hover transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Recent Activity</h3>
+                    <p class="text-gray-600">Total Deals: <span class="text-gray-900 font-medium">{{ recent_deals|length }}</span></p>
                 </div>
             </div>
 
-            <h3 class="text-xl font-semibold text-blue-600 mb-3">Recent Deals</h3>
+            <h3 class="text-2xl md:text-3xl font-semibold gradient-text mb-6">
+                Recent Deals
+            </h3>
             {% if recent_deals %}
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full text-left border-separate" style="border-spacing: 0;">
                         <thead>
-                            <tr class="bg-blue-100">
-                                <th class="p-3 text-sm font-semibold text-gray-700">Startup</th>
-                                <th class="p-3 text-sm font-semibold text-gray-700">Date</th>
-                                <th class="p-3 text-sm font-semibold text-gray-700">Amount (₹)</th>
+                            <tr class="bg-gray-50/80 rounded-t-xl">
+                                <th class="p-4 text-base font-medium text-gray-700 rounded-tl-lg">Startup</th>
+                                <th class="p-4 text-base font-medium text-gray-700">Date</th>
+                                <th class="p-4 text-base font-medium text-gray-700 rounded-tr-lg">Amount (₹)</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for deal in recent_deals %}
-                                <tr class="border-b hover:bg-gray-50">
-                                    <td class="p-3">{{ deal.startup.startup_name }}</td>
-                                    <td class="p-3">{{ deal.date_of_deal }}</td>
-                                    <td class="p-3">₹{{ deal.amount_invested }}</td>
+                                <tr class="border-b border-gray-200/50 hover:bg-gray-100 transition duration-200">
+                                    <td class="p-4 text-gray-800">{{ deal.startup.startup_name }}</td>
+                                    <td class="p-4 text-gray-800">{{ deal.date_of_deal }}</td>
+                                    <td class="p-4 text-green-600 font-medium">₹{{ deal.amount_invested }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             {% else %}
-                <p class="text-gray-600">No deals yet.</p>
+                <p class="text-gray-600 bg-gray-50/80 p-4 rounded-lg">No deals yet.</p>
             {% endif %}
 
         {% elif is_startup %}
-            <h2 class="text-2xl font-semibold text-blue-600 mb-4">Startup Dashboard</h2>
-            <div class="space-y-3 mb-6">
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-600 font-medium">Startup:</span>
-                    <span class="text-gray-900">{{ user.startup.startup_name }}</span>
+            <h2 class="text-3xl md:text-4xl font-semibold gradient-text mb-8">
+                Startup Dashboard
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="glass-card p-5 rounded-xl shadow-lg glass-hover transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Startup Details</h3>
+                    <p class="text-gray-600">Name: <span class="text-gray-900 font-medium">{{ user.startup.startup_name }}</span></p>
+                    <p class="text-gray-600">Valuation: <span class="text-gray-900 font-medium">₹{{ user.startup.valuation }}</span></p>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-600 font-medium">Valuation:</span>
-                    <span class="text-gray-900">₹{{ user.startup.valuation }}</span>
+                <div class="glass-card p-5 rounded-xl shadow-lg glass-hover transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Recent Activity</h3>
+                    <p class="text-gray-600">Total Offers: <span class="text-gray-900 font-medium">{{ recent_offers|length }}</span></p>
                 </div>
             </div>
 
-            <h3 class="text-xl font-semibold text-blue-600 mb-3">Recent Offers</h3>
+            <h3 class="text-2xl md:text-3xl font-semibold gradient-text mb-6">
+                Recent Offers
+            </h3>
             {% if recent_offers %}
-                <ul class="space-y-2">
-                    {% for offer in recent_offers %}
-                        <li class="p-3 bg-gray-50 rounded-lg">
-                            Asked: ₹{{ offer.investment_asked }}, Equity: {{ offer.equity_offered }}%
-                        </li>
-                    {% endfor %}
-                </ul>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-separate" style="border-spacing: 0;">
+                        <thead>
+                            <tr class="bg-gray-50/80 rounded-t-xl">
+                                <th class="p-4 text-base font-medium text-gray-700 rounded-tl-lg">Investment Asked (₹)</th>
+                                <th class="p-4 text-base font-medium text-gray-700">Equity Offered (%)</th>
+                                <th class="p-4 text-base font-medium text-gray-700">Loan Amount (₹)</th>
+                                <th class="p-4 text-base font-medium text-gray-700">Loan Rate (%)</th>
+                                <th class="p-4 text-base font-medium text-gray-700 rounded-tr-lg">Loan Duration (Months)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for offer in recent_offers %}
+                                <tr class="border-b border-gray-200/50 hover:bg-gray-100 transition duration-200">
+                                    <td class="p-4 text-green-600 font-medium">₹{{ offer.investment_asked }}</td>
+                                    <td class="p-4 text-blue-600 font-medium">{{ offer.equity_offered }}</td>
+                                    <td class="p-4 text-green-600 font-medium">₹{{ offer.loan_req }}</td>
+                                    <td class="p-4 text-blue-600 font-medium">{{ offer.loan_rate }}</td>
+                                    <td class="p-4 text-gray-800">{{ offer.loan_time }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-                <p class="text-gray-600">No offers yet.</p>
+                <p class="text-gray-600 bg-gray-50/80 p-4 rounded-lg">No offers yet.</p>
             {% endif %}
         {% endif %}
 
-        <hr class="my-6 border-gray-200">
+        <hr class="my-8 border-gray-200/50">
 
-        <div class="flex space-x-4">
-            <a href="{% url 'profile' %}" class="text-blue-600 font-medium hover:underline">My Profile</a>
-            <a href="{% url 'logout' %}" class="text-blue-600 font-medium hover:underline">Logout</a>
+        <div class="flex space-x-8">
+            <a href="{% url 'profile' %}" class="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition duration-200">My Profile</a>
+            <a href="{% url 'logout' %}" class="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition duration-200">Logout</a>
         </div>
     </div>
+
+    {% if messages %}
+        <div class="max-w-4xl w-full mt-6 space-y-3">
+            {% for message in messages %}
+                <div class="p-4 rounded-xl shadow-md 
+                    {% if message.tags == 'success' %}bg-green-50 text-green-700 border-l-4 border-green-400
+                    {% elif message.tags == 'error' %}bg-red-50 text-red-700 border-l-4 border-red-400
+                    {% else %}bg-blue-50 text-blue-700 border-l-4 border-blue-400{% endif %}
+                    glass-card transition duration-300 hover:shadow-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </body>
 </html>

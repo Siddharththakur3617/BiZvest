@@ -1,5 +1,10 @@
 from django import forms
-from .models import Startup, Investor, Sector
+from .models import Startup, Investor, Sector, Offers
+
+class OfferCreationForm(forms.ModelForm):
+    class Meta:
+        model = Offers
+        fields = ['investment_asked', 'equity_offered', 'loan_req', 'loan_rate', 'loan_time']
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100)
@@ -32,3 +37,8 @@ class StartupRegistrationForm(forms.Form):
     email_id = forms.EmailField(label="Email")
     sector = forms.ModelChoiceField(queryset=Sector.objects.all(), empty_label="Select Sector")
     descr = forms.CharField(widget=forms.Textarea, required=False)
+
+class OfferCreationForm(forms.ModelForm):
+    class Meta:
+        model = Offers
+        fields = ['investment_asked', 'equity_offered', 'loan_req', 'loan_rate', 'loan_time']

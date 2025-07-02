@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-16 bg-white shadow-2xl rounded-2xl p-8 border border-gray-100 transform hover:scale-102 transition duration-300" style="box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-indigo-800 mb-8 text-center bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent drop-shadow-md" style="background-image: linear-gradient(to right, #4b5563, #3b82f6); -webkit-background-clip: text; color: transparent; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        Create Offer
+    </h2>
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="relative group">
+                <label for="{{ field.id_for_label }}" class="block text-lg font-semibold text-gray-900 mb-2 transition-colors duration-200 group-hover:text-indigo-700">
+                    {% if field.label == 'Investment asked' %}Investment Amount Requested{% endif %}
+                    {% if field.label == 'Equity offered' %}Equity Share Offered{% endif %}
+                    {% if field.label == 'Loan req' %}Loan Amount Requested{% endif %}
+                    {% if field.label == 'Loan rate' %}Loan Interest Rate{% endif %}
+                    {% if field.label == 'Loan time' %}Loan Duration (Months){% endif %}
+                </label>
+                <div class="relative">
+                    {{ field|add_class:"w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"|attr:"style:padding: 0.75rem; border-radius: 0.75rem; transition: all 0.3s;"|attr:"placeholder:Enter value" }}
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-100 to-blue-100 rounded-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    {% if field.errors %}
+                        <p class="text-sm text-red-500 mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="text-center">
+            <button type="submit"
+                class="inline-block w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition duration-300"
+                style="background-image: linear-gradient(to right, #4b5563, #3b82f6); padding: 0.75rem 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s;">
+                Submit Offer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
